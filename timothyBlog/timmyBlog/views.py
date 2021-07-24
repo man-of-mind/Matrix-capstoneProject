@@ -1,7 +1,8 @@
 from django.db import models
+from django.urls.base import reverse_lazy
 from timmyBlog.models import Post
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView, CreateView, UpdateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Post
 from .forms import EditForm, PostForm
 
@@ -11,6 +12,8 @@ from .forms import EditForm, PostForm
 class HomePage(ListView):
     model = Post
     template_name = 'home.html'
+    #ordering = ['-id']
+    ordering = ['-post_time']
 
 
 class ArticleDetailPage(DetailView):
@@ -31,3 +34,9 @@ class UpdatePostView(UpdateView):
     form_class = EditForm
     template_name = 'update_post.html'
 #    fields = ('title', 'title_tag', 'body')
+
+
+class DeletePostView(DeleteView):
+    model = Post
+    template_name = 'delete-post.html'
+    success_url = reverse_lazy('home')
